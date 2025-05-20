@@ -10,7 +10,7 @@ public class BreakoutClone extends JFrame {
     private Timer timer, acelerador;
     private int ballDX = 2, ballDY = -2;
     private int paddleSpeed = 15;
-
+// dsdasdasdasdasdas
     public BreakoutClone() {
         setTitle("Breakout Clone - Sin Graphics");
         setSize(500, 600);
