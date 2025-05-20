@@ -4,11 +4,12 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class BreakoutClone extends JFrame {
-    private JLabel paddle, ball;
+    private JLabel paddle, ball, labelPuntuacion;
     private ArrayList<JLabel> blocks = new ArrayList<>();
     private Timer timer, acelerador;
     private int ballDX = 2, ballDY = -2;
     private int paddleSpeed = 15;
+    private int puntuacion = 0;
 
     public BreakoutClone() {
         setTitle("Breakout Clone - Version Españita");
@@ -33,14 +34,8 @@ public class BreakoutClone extends JFrame {
 
     private void iniciarJuego() {
         // Detenemos cualquier Timer anterior si existe
-        if (timer != null) {
-            timer.stop();
-            timer = null;
-        }
-        if (acelerador != null) {
-            acelerador.stop();
-            acelerador = null;
-        }
+        if (timer != null) timer.stop();
+        if (acelerador != null) acelerador.stop();
 
         // Eliminamos todos los componentes de la ventana
         getContentPane().removeAll();
@@ -48,62 +43,72 @@ public class BreakoutClone extends JFrame {
         // Limpiamos el array de bloques
         blocks.clear();
 
-        // Reiniciamos las variables de velocidad de la pelota
+        // Reiniciamos velocidad y puntuación
         ballDX = 2;
         ballDY = -2;
+        puntuacion = 0;
 
         // Creamos los elementos del juego desde cero
         crearPaleta();
         crearPelota();
         crearBloques();
+        crearPuntuacion();
 
         // Volvemos a pintar todo
         revalidate();
         repaint();
 
-        // Iniciamos el Timer de movimiento
+        // Iniciamos los timers
         timer = new Timer(10, e -> moverPelota());
         timer.start();
 
-        // Iniciamos el Timer que acelera la pelota
         acelerador = new Timer(5000, e -> aumentarVelocidad());
         acelerador.start();
     }
 
+    private void crearPuntuacion() {
+        labelPuntuacion = new JLabel("Puntos: 0");
+        labelPuntuacion.setForeground(Color.BLACK);
+        labelPuntuacion.setBounds(getWidth() - 100, getHeight() - 70, 100, 30); // esquina inferior derecha
+        add(labelPuntuacion);
+    }
+
+    private void actualizarPuntuacion(int puntosGanados) {
+        puntuacion += puntosGanados;
+        labelPuntuacion.setText("Puntos: " + puntuacion);
+    }
+
     private void aumentarVelocidad() {
-        // Multiplicamos por 1.1 (10% más rápido)
         ballDX *= 1.5;
         ballDY *= 1.5;
-        System.out.println("Nueva velocidad: " + ballDX + ", " + ballDY); // opcional
+        System.out.println("Nueva velocidad: " + ballDX + ", " + ballDY);
     }
 
     private void crearPaleta() {
         paddle = new JLabel();
         paddle.setOpaque(true);
-        paddle.setBackground(new Color(244, 67, 54)); // Azul moderno
+        paddle.setBackground(new Color(244, 67, 54));
         paddle.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         paddle.setBounds(220, 500, 100, 10);
         add(paddle);
     }
 
-
     private void crearPelota() {
         ball = new JLabel();
         ball.setOpaque(true);
-        ball.setBackground(new Color(0, 0, 0)); // Naranja fuerte
+        ball.setBackground(new Color(0, 0, 0));
         ball.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         ball.setBounds(240, 480, 15, 15);
         add(ball);
     }
 
-
     private void crearBloques() {
         int blockWidth = 60, blockHeight = 20, padding = 5;
         Color[] filaColores = {
-                new Color(244, 67, 54),    // rojo
-                new Color(255, 193, 7),    // amarillo
-                new Color(255, 193, 7),    // verde
-                new Color(244, 67, 54)    // azul
+                new Color(244, 67, 54),
+                new Color(255, 193, 7),
+                new Color(255, 193, 7),
+                new Color(244, 67, 54)
         };
 
         for (int row = 0; row < 4; row++) {
@@ -118,7 +123,6 @@ public class BreakoutClone extends JFrame {
             }
         }
     }
-
 
     private void moverPaleta(int keyCode) {
         int x = paddle.getX();
@@ -145,6 +149,7 @@ public class BreakoutClone extends JFrame {
             if (block.isVisible() && ball.getBounds().intersects(block.getBounds())) {
                 block.setVisible(false);
                 ballDY *= -1;
+                actualizarPuntuacion(100); // 100 puntos por bloque destruido
                 break;
             }
         }
@@ -163,7 +168,7 @@ public class BreakoutClone extends JFrame {
         if (blocks.stream().noneMatch(JLabel::isVisible)) {
             timer.stop();
             acelerador.stop();
-            int opcion = JOptionPane.showConfirmDialog(this, "¡Ganaste! ¿Jugar otra vez?", "Victoria", JOptionPane.YES_NO_OPTION);
+            int opcion = JOptionPane.showConfirmDialog(this, "¡Ganaste con " + puntuacion + " puntos! ¿Jugar otra vez?", "Victoria", JOptionPane.YES_NO_OPTION);
             if (opcion == JOptionPane.YES_OPTION) {
                 iniciarJuego();
             } else {
