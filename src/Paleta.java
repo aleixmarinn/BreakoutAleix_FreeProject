@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Paleta extends JLabel {
-    private final int velocidad = 20;
+    private final int velocidad = 25;
 
     public Paleta() {
         setBounds(220, 500, 100, 10);
