@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-//dsdada
 public class BreakoutClone extends JFrame {
     private JLabel paddle, ball;
     private ArrayList<JLabel> blocks = new ArrayList<>();
@@ -12,9 +11,10 @@ public class BreakoutClone extends JFrame {
     private int paddleSpeed = 15;
 
     public BreakoutClone() {
-        setTitle("Breakout Clone - Sin Graphics");
+        setTitle("Breakout Clone - Version Españita");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(null);
         setResizable(false);
 
@@ -79,35 +79,46 @@ public class BreakoutClone extends JFrame {
 
     private void crearPaleta() {
         paddle = new JLabel();
-        paddle.setBackground(Color.BLUE);
         paddle.setOpaque(true);
-        paddle.setBounds(200, 500, 100, 15);
+        paddle.setBackground(new Color(244, 67, 54)); // Azul moderno
+        paddle.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+        paddle.setBounds(220, 500, 100, 10);
         add(paddle);
     }
 
+
     private void crearPelota() {
         ball = new JLabel();
-        ball.setBackground(Color.RED);
         ball.setOpaque(true);
+        ball.setBackground(new Color(0, 0, 0)); // Naranja fuerte
+        ball.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         ball.setBounds(240, 480, 15, 15);
         add(ball);
-        ballDX = 2;
-        ballDY = -2;
     }
+
 
     private void crearBloques() {
         int blockWidth = 60, blockHeight = 20, padding = 5;
+        Color[] filaColores = {
+                new Color(244, 67, 54),    // rojo
+                new Color(255, 193, 7),    // amarillo
+                new Color(255, 193, 7),    // verde
+                new Color(244, 67, 54)    // azul
+        };
+
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 7; col++) {
                 JLabel block = new JLabel();
-                block.setBackground(Color.GREEN);
                 block.setOpaque(true);
+                block.setBackground(filaColores[row % filaColores.length]);
+                block.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 block.setBounds(10 + col * (blockWidth + padding), 30 + row * (blockHeight + padding), blockWidth, blockHeight);
                 blocks.add(block);
                 add(block);
             }
         }
     }
+
 
     private void moverPaleta(int keyCode) {
         int x = paddle.getX();
