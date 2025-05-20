@@ -14,7 +14,7 @@ public class GestorJuego extends JPanel {
     public GestorJuego() {
         setLayout(null);
         setBounds(0, 0, 500, 600);
-        setOpaque(false); // <- importante: fondo transparente para ver la image
+        setOpaque(false);
         iniciarJuego();
     }
 

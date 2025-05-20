@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Paleta extends JLabel {
-    private final int velocidad = 25;
 
     public Paleta() {
         setBounds(220, 500, 100, 10);
@@ -14,6 +13,7 @@ public class Paleta extends JLabel {
 
     public void mover(int keyCode, int anchoPanel) {
         int x = getX();
+        int velocidad = 25;
         if (keyCode == KeyEvent.VK_LEFT && x > 0) {
             setLocation(x - velocidad, getY());
         } else if (keyCode == KeyEvent.VK_RIGHT && x + getWidth() < anchoPanel) {

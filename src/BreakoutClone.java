@@ -7,19 +7,16 @@ public class BreakoutClone extends JFrame {
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(false); // No redimensionar la ventana
 
-        // ✅ Fondo con imagen
+        // Fondo
         JLabel fondo = new JLabel(new ImageIcon("src/Images/dragonite.jpeg"));
-        fondo.setLayout(null); // Muy importante para que funcione setBounds()
-        setContentPane(fondo); // Establece fondo como contentPane
-
-
+        fondo.setLayout(null);
+        setContentPane(fondo);
 
         // Panel del juego
-        // ✅ Panel del juego encima del fondo
-        GestorJuego juego = new GestorJuego(); // Ya no le pasamos this
-        fondo.add(juego); // Añadimos el juego al fondo, NO lo seteamos como contentPane
+        GestorJuego juego = new GestorJuego();
+        fondo.add(juego);
         setContentPane(fondo);
         addKeyListener(juego.getKeyAdapter());
         setFocusable(true);
