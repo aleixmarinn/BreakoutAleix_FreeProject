@@ -3,8 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
-
+//dsdada
 public class BreakoutClone extends JFrame {
     private JLabel paddle, ball;
     private ArrayList<JLabel> blocks = new ArrayList<>();
