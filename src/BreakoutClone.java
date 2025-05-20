@@ -8,7 +8,7 @@ public class BreakoutClone extends JFrame {
     private ArrayList<JLabel> blocks = new ArrayList<>();
     private Timer timer, acelerador;
     private int ballDX = 2, ballDY = -2;
-    private int paddleSpeed = 15;
+    private int paddleSpeed = 20;
     private int puntuacion = 0;
 
     public BreakoutClone() {
@@ -47,6 +47,10 @@ public class BreakoutClone extends JFrame {
         ballDX = 2;
         ballDY = -2;
         puntuacion = 0;
+
+        // Fondo
+        setContentPane(new JLabel(new ImageIcon("src/Images/dragonite.jpeg"))); // O pon la ruta absoluta si no carga
+        getContentPane().setLayout(null); // Para poder usar setBounds
 
         // Creamos los elementos del juego desde cero
         crearPaleta();
