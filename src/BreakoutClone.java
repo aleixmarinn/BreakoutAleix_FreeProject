@@ -11,6 +11,7 @@ public class BreakoutClone extends JFrame {
     private int ballDX = 2, ballDY = -2;
     private int paddleSpeed = 15;
 // dsdasdasdasdasdas
+    //prueba
     // prueba
     public BreakoutClone() {
         setTitle("Breakout Clone - Sin Graphics");
