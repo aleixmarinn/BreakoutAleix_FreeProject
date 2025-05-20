@@ -3,16 +3,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-//sadasdasd
 public class BreakoutClone extends JFrame {
     private JLabel paddle, ball;
     private ArrayList<JLabel> blocks = new ArrayList<>();
     private Timer timer, acelerador;
     private int ballDX = 2, ballDY = -2;
     private int paddleSpeed = 15;
-// dsdasdasdasdasdas
-    //prueba
-    // prueba
+
     public BreakoutClone() {
         setTitle("Breakout Clone - Sin Graphics");
         setSize(500, 600);
