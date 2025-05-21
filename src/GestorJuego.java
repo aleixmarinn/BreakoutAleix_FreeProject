@@ -59,7 +59,7 @@ public class GestorJuego extends JPanel {
 
     private void crearPuntuacion() {
         labelPuntuacion = new JLabel("Puntos: 0");
-        labelPuntuacion.setForeground(Color.BLACK);
+        labelPuntuacion.setForeground(Color.white);
         labelPuntuacion.setBounds(380, 500, 100, 30);
         add(labelPuntuacion);
     }
