@@ -7,14 +7,22 @@ public class GestorJuego extends JPanel {
     private Pelota pelota;
     private Paleta paleta;
     private ArrayList<Bloque> bloques;
-    private JLabel labelPuntuacion;
+    private JLabel labelPuntuacion, labelJugador;
     private Timer timer, acelerador;
     private int puntuacion = 0;
+    private String nombreJugador;
+    private GestorBD gestorBD; // 🔥 Añadido para manejar la base de datos
 
-    public GestorJuego() {
+
+    public GestorJuego(String nombreJugador) {
+        this.nombreJugador = nombreJugador;
+        this.gestorBD = new GestorBD(); // 🔥 Inicializamos el gestor BD
+
         setLayout(null);
         setBounds(0, 0, 500, 600);
         setOpaque(false);
+        setFocusable(true); // ✅ Necesario para que reciba eventos del teclado
+
         iniciarJuego();
     }
 
@@ -33,6 +41,7 @@ public class GestorJuego extends JPanel {
 
         crearBloques();
         crearPuntuacion();
+        crearNombreJugador();
 
         timer = new Timer(10, e -> moverPelota());
         acelerador = new Timer(5000, e -> pelota.aumentarVelocidad());
@@ -62,6 +71,13 @@ public class GestorJuego extends JPanel {
         labelPuntuacion.setForeground(Color.white);
         labelPuntuacion.setBounds(380, 500, 100, 30);
         add(labelPuntuacion);
+    }
+
+    private void crearNombreJugador() {
+        labelJugador = new JLabel("Jugador: " + nombreJugador);
+        labelJugador.setForeground(Color.white);
+        labelJugador.setBounds(20, 500, 200, 30);
+        add(labelJugador);
     }
 
     public void actualizarPuntuacion(int puntosGanados) {
@@ -96,8 +112,13 @@ public class GestorJuego extends JPanel {
         timer.stop();
         acelerador.stop();
 
+        // 🔥 Guardar la puntuación en la BD
+        gestorBD.guardarPartida(nombreJugador, puntuacion);
+
         int opcion = JOptionPane.showConfirmDialog(this,
-                victoria ? "¡Ganaste con " + puntuacion + " puntos! ¿Jugar otra vez?" : "¡Has perdido! ¿Jugar de nuevo?",
+                victoria ?
+                        "¡Felicidades, " + nombreJugador + "! Has ganado con " + puntuacion + " puntos. ¿Jugar otra vez?" :
+                        "¡Ánimo, " + nombreJugador + "! Has perdido. ¿Intentarlo de nuevo?",
                 "Fin del juego", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
