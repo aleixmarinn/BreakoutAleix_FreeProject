@@ -9,6 +9,16 @@ public class GestorBD {
     private static final String USER = "FreeProject";
     private static final String PASSWORD = "aleix";
 
+    // Carga el driver JDBC al iniciar la clase (opcional en JDBC 4+ pero recomendable)
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Driver MySQL cargado correctamente.");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error cargando driver MySQL: " + e.getMessage());
+        }
+    }
+
     public GestorBD() {
         crearTablasSiNoExisten();
     }
@@ -49,7 +59,7 @@ public class GestorBD {
         String insert = "INSERT INTO jugadores (nombre) VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
-            // Primero intento buscar el jugador
+            // Buscar jugador
             try (PreparedStatement psSelect = conn.prepareStatement(select)) {
                 psSelect.setString(1, nombreJugador);
                 try (ResultSet rs = psSelect.executeQuery()) {
@@ -59,7 +69,7 @@ public class GestorBD {
                 }
             }
 
-            // Si no existe, lo inserto
+            // Insertar jugador si no existe
             try (PreparedStatement psInsert = conn.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
                 psInsert.setString(1, nombreJugador);
                 int affectedRows = psInsert.executeUpdate();
@@ -106,5 +116,47 @@ public class GestorBD {
         } catch (SQLException e) {
             System.out.println("Error al guardar la partida: " + e.getMessage());
         }
+    }
+
+    // Método para mostrar todas las partidas almacenadas
+    public void mostrarPartidas() {
+        String sql = """
+            SELECT p.id, j.nombre, p.puntuacion, p.fecha
+            FROM partidas p
+            JOIN jugadores j ON p.jugador_id = j.id
+            ORDER BY p.fecha DESC
+            """;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            System.out.println("Listado de partidas:");
+            while (rs.next()) {
+                int idPartida = rs.getInt("id");
+                String jugador = rs.getString("nombre");
+                int puntuacion = rs.getInt("puntuacion");
+                String fecha = rs.getString("fecha");
+
+                System.out.printf("Partida %d - Jugador: %s, Puntuación: %d, Fecha: %s%n",
+                        idPartida, jugador, puntuacion, fecha);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar partidas: " + e.getMessage());
+        }
+    }
+
+    // Método main para probar
+    public static void main(String[] args) {
+        GestorBD gestor = new GestorBD();
+
+        // Insertar y guardar partidas de ejemplo
+        gestor.guardarPartida("Aleix", 1500);
+        gestor.guardarPartida("Maria", 2300);
+        gestor.guardarPartida("Aleix", 1800);
+
+        // Mostrar partidas
+        gestor.mostrarPartidas();
     }
 }
