@@ -1,3 +1,9 @@
+package Util;
+
+import Componentes.Bloque;
+import Componentes.Paleta;
+import Componentes.Pelota;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,17 +17,17 @@ public class GestorJuego extends JPanel {
     private Timer timer, acelerador;
     private int puntuacion = 0;
     private String nombreJugador;
-    private GestorBD gestorBD; // 🔥 Añadido para manejar la base de datos
+    private GestorBD gestorBD;
 
 
     public GestorJuego(String nombreJugador) {
         this.nombreJugador = nombreJugador;
-        this.gestorBD = new GestorBD(); // 🔥 Inicializamos el gestor BD
+        this.gestorBD = new GestorBD();
 
         setLayout(null);
         setBounds(0, 0, 500, 600);
         setOpaque(false);
-        setFocusable(true); // ✅ Necesario para que reciba eventos del teclado
+        setFocusable(true);
 
         iniciarJuego();
     }
@@ -112,7 +118,6 @@ public class GestorJuego extends JPanel {
         timer.stop();
         acelerador.stop();
 
-        // 🔥 Guardar la puntuación en la BD
         gestorBD.guardarPartida(nombreJugador, puntuacion);
 
         int opcion = JOptionPane.showConfirmDialog(this,
